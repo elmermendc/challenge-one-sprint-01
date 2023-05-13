@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import static com.challenge.challenge.MainApplication.llenarCombo;
 
-public class ConversorMonedasController extends Validador{
+public class ConversorMonedasController{
 
     public TextField txtValor;
     public ComboBox txtFuente;
@@ -34,9 +34,9 @@ public class ConversorMonedasController extends Validador{
         String deTipoMoneda = (String) txtFuente.getSelectionModel().getSelectedItem();
         String aTipoMoneda = (String) txtDestino.getSelectionModel().getSelectedItem();
 
-        if(!validarNumero(numero)) return;
-        if(!super.validarComboBox(deTipoMoneda)) return;
-        if(!super.validarComboBox(aTipoMoneda)) return;
+        if(!Validador.validarNumero(numero)) return;
+        if(!Validador.validarComboBox(deTipoMoneda)) return;
+        if(!Validador.validarComboBox(aTipoMoneda)) return;
 
         String deMoneda = deTipoMoneda.substring(0, deTipoMoneda.indexOf(" "));
         String aMoneda = aTipoMoneda.substring(0, aTipoMoneda.indexOf(" "));
@@ -47,22 +47,7 @@ public class ConversorMonedasController extends Validador{
         BigDecimal result = converter.convert(monto, deMoneda, aMoneda);
         txtResultado.setText(numero+fuenteMoneda+" = \n"+result.toString()+ destinoMoneda);
     }
-    public boolean validarNumero(String numero){
-        Pattern pattern = Pattern.compile("^[0-9]+(\\.[0-9]{1,2})?$");
-        Matcher matcher = pattern.matcher(numero);
-        if (!matcher.matches()) {
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle("Error en valor");
-            dialog.setContentText("Ingrese valor de moneda a convertir");
-            ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().add(okButton);
-            dialog.setResultConverter(dialogButton -> "OK");
-            dialog.showAndWait();
-            return false;
-        }
-        return true;
 
-    }
 
 
 
